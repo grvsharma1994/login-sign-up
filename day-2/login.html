@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="navbar.css">
+    <style>
+        form{
+            width:450px;
+            display:grid;
+            gap:20px;
+            font-family:sans-serif;
+            padding: 10px 30px 30px;
+            margin:auto;
+            margin-top:40px;
+            font-size:20px;
+            font-weight:lighter;
+        }
+        #login{
+            box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
+            width:540px;
+            margin:auto;
+            border-radius:10px;
+            padding-bottom:15px;
+        }
+        h2{
+            text-align:center;
+        }
+        input{
+            height:55px;
+            border-radius:5px;
+            border:rgba(128, 128, 128, 0.23) solid 0.1px;
+            padding:0px 20px;
+            font-size:18px;
+        }
+        input:last-child{
+            height:55px;
+            color:grey;
+        }
+        #accDoesntExists {
+            text-align: center;
+            font-size: 20px;
+            font-family: sans-serif;
+        }
+
+        #accDoesntExists>a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="nav">
+        <div>
+         <p onclick="loginPage()">Login</p>
+        <p onclick="signupPage()">Signup</p>
+    </div>
+    </div>
+    <div id="login">
+    <form>
+        <h2>Login</h2>
+        <input id="email" type="email" placeholder="Enter Email" />
+        <input id="password" type="password"  placeholder="Enter Password" />
+        <input type="submit" value="LOGIN" />
+    </form>
+    <p id="accDoesntExists">Don't have an account? <a href="signup.html">Create New Account</a></p>
+</div>
+
+</body>
+
+</html>
+<script>
+    var redirect = localStorage.getItem("redirect");
+    document.querySelector("form").addEventListener("submit",myFunction);
+    var userDataArr = JSON.parse(localStorage.getItem("userData"))||[];
+    function myFunction () {
+        event.preventDefault();
+        var flag = false;
+        var email = document.querySelector("#email").value;
+        var password = document.querySelector("#password").value;
+        userDataArr.forEach(function(ele){
+            if(ele.email==email && ele.password==password){
+                flag = true;
+            }
+            console.log(ele);
+        }) 
+
+        if(flag){
+            alert("Successfully logged in!");
+            var token = Math.random();
+            localStorage.setItem("token",token);
+            if(redirect){
+                localStorage.removeItem("redirect");
+                window.location.href = redirect;
+            }
+        }
+        else {
+            alert("Please enter correct email or password!");
+        }
+     
+    }
+    function signupPage() {
+        window.location.href = "signup.html"
+    }
+    function loginPage() {
+        window.location.href = "login.html"
+    }
+    </script>
